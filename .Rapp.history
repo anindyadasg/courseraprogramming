@@ -1,0 +1,572 @@
+rankall <- function(outcome , num = "best" ){#
+  setwd("~/Desktop/Coursera R Programming/rprog-data-ProgAssignment3-data")#
+  ##state <- as.character(state)#
+  outcome <- as.character(outcome)#
+  outcome_master <- matrix(data=c("heart attack","heart failure","pneumonia"),nrow=3,ncol=1)#
+  pos_outcome <- match(outcome,outcome_master,nomatch=0)#
+  numid <- as.character(num)#
+  ##if (num == "best"){#
+  ##numid <- 1}#
+  ##if (is.numeric(num)){#
+  ##numid <- num#
+  ##}#
+  ##num <- as.numeric(num)#
+  err_msg1 <- c('Error in rankall("')#
+  err_msg2 <- c('", "')#
+  ## err_msg3 <- c('") : invalid state')#
+  err_msg4 <- c('") : invalid outcome')#
+  if ( pos_outcome == 0) {#
+    stop(err_msg1,outcome,err_msg2,numid,err_msg4)#
+    geterrmessage()#
+  }#
+  outcomeofcare <- read.csv("outcome-of-care-measures.csv",header=TRUE,sep=",",na.strings="Not Available",stringsAsFactors = FALSE)#
+  state_factor <- as.factor(outcomeofcare$State)#
+  state_factor_level <- levels(state_factor)#
+  res_int <- matrix(data=c("<NA>"),nrow=length(state_factor_level),ncol=2)#
+  for (i in 1:length(state_factor_level)){#
+      res_int[i,2] <- state_factor_level[i]#
+  }    #
+  ##pos_state <- match(state,state_factor_level,nomatch = 0)#
+  ##if (pos_state > 0 ){#
+    if (outcome == "heart attack"){#
+      outcomeofcare_final <- outcomeofcare[complete.cases(outcomeofcare[11]),]#
+      outcomeofcare_final <- outcomeofcare_final[c(2,7,11)]#
+      heart_attack_set <- data.frame()#
+      heart_attack_set_rev <- data.frame()#
+      for (i in 1: length(state_factor_level)){#
+      outcomeofcare_final_state <- outcomeofcare_final[which(outcomeofcare_final$State == state_factor_level[i]),]#
+      names(outcomeofcare_final_state)[1] <- "Hosp"#
+      names(outcomeofcare_final_state)[3] <- "MR"#
+      y <- outcomeofcare_final_state#
+      st <- y[order(y$MR,y$Hosp),]#
+      strev <- y[order(-y$MR,y$Hosp),]#
+      ##if (num == "worst"){#
+      ##numid <- nrow(st)#
+      ##}#
+      matrow <- nrow(st)#
+      matrix_heart_attack_rank <- matrix(data=NA,nrow=matrow,ncol=1)#
+      colnames(matrix_heart_attack_rank) <- c("Rank")#
+      ##matrix_heart_attack_rank_reverse <- matrix(data=NA,nrow=numid,ncol=1)#
+      ##colnames(matrix_heart_attack_rank_reverse) <- c("Reverse Rank")#
+      for (j in 1:matrow){#
+             matrix_heart_attack_rank[j] <- j#
+      }#
+      ##for (k in numid:1){#
+      ##  matrix_heart_attack_rank_reverse[k] <- k#
+      ##}#
+      rank_df <- as.data.frame(matrix_heart_attack_rank)#
+      temp_df <- cbind(st,rank_df)#
+      temp_df_rev <- cbind(strev,rank_df)#
+      heart_attack_set <- rbind(heart_attack_set,temp_df)#
+      heart_attack_set_rev <- rbind(heart_attack_set_rev,temp_df_rev)#
+      }#
+    }#
+  if (outcome == "heart failure"){#
+    outcomeofcare_final <- outcomeofcare[complete.cases(outcomeofcare[17]),]#
+    outcomeofcare_final <- outcomeofcare_final[c(2,7,17)]#
+    heart_failure_set <- data.frame()#
+    heart_failure_set_rev <- data.frame()#
+    for (i in 1: length(state_factor_level)){#
+      outcomeofcare_final_state <- outcomeofcare_final[which(outcomeofcare_final$State == state_factor_level[i]),]#
+      names(outcomeofcare_final_state)[1] <- "Hosp"#
+      names(outcomeofcare_final_state)[3] <- "MR"#
+      y <- outcomeofcare_final_state#
+      st <- y[order(y$MR,y$Hosp),]#
+      strev <- y[order(-y$MR,y$Hosp),]#
+      ##if (num == "worst"){#
+      ##numid <- nrow(st)#
+      ##}#
+      matrow <- nrow(st)#
+      matrix_heart_failure_rank <- matrix(data=NA,nrow=matrow,ncol=1)#
+      colnames(matrix_heart_failure_rank) <- c("Rank")#
+      ##matrix_heart_attack_rank_reverse <- matrix(data=NA,nrow=numid,ncol=1)#
+      ##colnames(matrix_heart_attack_rank_reverse) <- c("Reverse Rank")#
+      for (j in 1:matrow){#
+        matrix_heart_failure_rank[j] <- j#
+      }#
+      ##for (k in numid:1){#
+      ##  matrix_heart_attack_rank_reverse[k] <- k#
+      ##}#
+      rank_df <- as.data.frame(matrix_heart_failure_rank)#
+      temp_df <- cbind(st,rank_df)#
+      temp_df_rev <- cbind(strev,rank_df)#
+      heart_failure_set <- rbind(heart_failure_set,temp_df)#
+      heart_failure_set_rev <- rbind(heart_failure_set_rev,temp_df_rev)#
+    }#
+  }#
+  if (outcome == "pneumonia"){#
+    outcomeofcare_final <- outcomeofcare[complete.cases(outcomeofcare[23]),]#
+    outcomeofcare_final <- outcomeofcare_final[c(2,7,23)]#
+    pneumonia_set <- data.frame()#
+    pneumonia_set_rev <- data.frame()#
+    for (i in 1: length(state_factor_level)){#
+      outcomeofcare_final_state <- outcomeofcare_final[which(outcomeofcare_final$State == state_factor_level[i]),]#
+      names(outcomeofcare_final_state)[1] <- "Hosp"#
+      names(outcomeofcare_final_state)[3] <- "MR"#
+      y <- outcomeofcare_final_state#
+      st <- y[order(y$MR,y$Hosp),]#
+      strev <- y[order(-y$MR,y$Hosp),]#
+      ##if (num == "worst"){#
+      ##numid <- nrow(st)#
+      ##}#
+      matrow <- nrow(st)#
+      matrix_pneumonia_rank <- matrix(data=NA,nrow=matrow,ncol=1)#
+      colnames(matrix_pneumonia_rank) <- c("Rank")#
+      ##matrix_heart_attack_rank_reverse <- matrix(data=NA,nrow=numid,ncol=1)#
+      ##colnames(matrix_heart_attack_rank_reverse) <- c("Reverse Rank")#
+      for (j in 1:matrow){#
+        matrix_pneumonia_rank[j] <- j#
+      }#
+      ##for (k in numid:1){#
+      ##  matrix_heart_attack_rank_reverse[k] <- k#
+      ##}#
+      rank_df <- as.data.frame(matrix_pneumonia_rank)#
+      temp_df <- cbind(st,rank_df)#
+      temp_df_rev <- cbind(strev,rank_df)#
+      pneumonia_set <- rbind(pneumonia_set,temp_df)#
+      pneumonia_set_rev <- rbind(pneumonia_set_rev,temp_df_rev)#
+    }#
+  }#
+  ## Prepare the data frame for the final output#
+  ## Step 1 : Assign numid based on Best , Worst or numeric value of parameter num#
+  if ( num != "worst") {#
+     if (num == "best") {#
+         numid <- 1}#
+    else { numid <- num}#
+  }#
+  else {#
+    numid <- 1}#
+  ## Step 2 : Intermediate data frame to get Hospital Name and State#
+  if (num != "worst"){#
+    intermediate_result <- data.frame()#
+    if (outcome == "heart attack"){#
+        intermediate_result <- heart_attack_set[which(heart_attack_set$Rank == numid),]#
+        ##no_of_rows <- nrow(intermediate_result)#
+        ##intermediate_result_mat <- as.matrix(intermediate )#
+        ##res_final <- matrix(data=c("NA"),nrow=no_of_rows,ncol=2)#
+        i = 0#
+        for ( i in 1:length(state_factor_level)){#
+          pos_outcome <- match(res_int[i,2],intermediate_result$State,nomatch=0)#
+          if (pos_outcome > 0){#
+          res_int[i,1] <- intermediate_result$Hosp[pos_outcome]#
+          }#
+        }#
+        res_int <- as.data.frame(res_int)#
+        colnames(res_int) <- c("Hospital","State")#
+        rownames(res_int) <- res_int$State#
+    }#
+    if (outcome == "heart failure"){#
+      intermediate_result <- heart_failure_set[which(heart_failure_set$Rank == numid),]#
+      i = 0#
+      for ( i in 1:length(state_factor_level)){#
+        pos_outcome <- match(res_int[i,2],intermediate_result$State,nomatch=0)#
+        if (pos_outcome > 0){#
+          res_int[i,1] <- intermediate_result$Hosp[pos_outcome]#
+        }#
+      }#
+      res_int <- as.data.frame(res_int)#
+      colnames(res_int) <- c("Hospital","State")#
+      rownames(res_int) <- res_int$State#
+    }#
+    if (outcome == "pneumonia"){#
+      intermediate_result <- pneumonia_set[which(pneumonia_set$Rank == numid),]#
+      i = 0#
+      for ( i in 1:length(state_factor_level)){#
+        pos_outcome <- match(res_int[i,2],intermediate_result$State,nomatch=0)#
+        if (pos_outcome > 0){#
+          res_int[i,1] <- intermediate_result$Hosp[pos_outcome]#
+        }#
+      }#
+      res_int <- as.data.frame(res_int)#
+      colnames(res_int) <- c("Hospital","State")#
+      rownames(res_int) <- res_int$State#
+    }#
+  }  #
+  else{#
+    intermediate_result <- data.frame()#
+    if (outcome == "heart attack"){#
+      intermediate_result <- heart_attack_set_rev[which(heart_attack_set_rev$Rank == numid),]#
+      i = 0#
+      for ( i in 1:length(state_factor_level)){#
+        pos_outcome <- match(res_int[i,2],intermediate_result$State,nomatch=0)#
+        if (pos_outcome > 0){#
+          res_int[i,1] <- intermediate_result$Hosp[pos_outcome]#
+        }#
+      }#
+      res_int <- as.data.frame(res_int)#
+      colnames(res_int) <- c("Hospital","State")#
+      rownames(res_int) <- res_int$State#
+    }#
+    if (outcome == "heart failure"){#
+      intermediate_result <- heart_failure_set_rev[which(heart_failure_set_rev$Rank == numid),]#
+      i = 0#
+      for ( i in 1:length(state_factor_level)){#
+        pos_outcome <- match(res_int[i,2],intermediate_result$State,nomatch=0)#
+        if (pos_outcome > 0){#
+          res_int[i,1] <- intermediate_result$Hosp[pos_outcome]#
+        }#
+      }#
+      res_int <- as.data.frame(res_int)#
+      colnames(res_int) <- c("Hospital","State")#
+      rownames(res_int) <- res_int$State#
+    }#
+    if (outcome == "pneumonia"){#
+      intermediate_result <- pneumonia_set_rev[which(pneumonia_set_rev$Rank == numid),]#
+      i = 0#
+      for ( i in 1:length(state_factor_level)){#
+        pos_outcome <- match(res_int[i,2],intermediate_result$State,nomatch=0)#
+        if (pos_outcome > 0){#
+          res_int[i,1] <- intermediate_result$Hosp[pos_outcome]#
+        }#
+      }#
+      res_int <- as.data.frame(res_int)#
+      colnames(res_int) <- c("Hospital","State")#
+      rownames(res_int) <- res_int$State#
+    }#
+}#
+return(res_int)}
+rankall("heart attack",4)
+rankall <- function(outcome , num = "best" ){#
+  setwd("~/Desktop/Coursera R Programming/rprog-data-ProgAssignment3-data")#
+  ##state <- as.character(state)#
+  outcome <- as.character(outcome)#
+  outcome_master <- matrix(data=c("heart attack","heart failure","pneumonia"),nrow=3,ncol=1)#
+  pos_outcome <- match(outcome,outcome_master,nomatch=0)#
+  numid <- as.character(num)#
+  ##if (num == "best"){#
+  ##numid <- 1}#
+  ##if (is.numeric(num)){#
+  ##numid <- num#
+  ##}#
+  ##num <- as.numeric(num)#
+  err_msg1 <- c('Error in rankall("')#
+  err_msg2 <- c('", "')#
+  ## err_msg3 <- c('") : invalid state')#
+  err_msg4 <- c('") : invalid outcome')#
+  if ( pos_outcome == 0) {#
+    stop(err_msg1,outcome,err_msg2,numid,err_msg4)#
+    geterrmessage()#
+  }#
+  outcomeofcare <- read.csv("outcome-of-care-measures.csv",header=TRUE,sep=",",na.strings="Not Available",stringsAsFactors = FALSE)#
+  state_factor <- as.factor(outcomeofcare$State)#
+  state_factor_level <- levels(state_factor)#
+  res_int <- matrix(data=c("<NA>"),nrow=length(state_factor_level),ncol=2)#
+  for (i in 1:length(state_factor_level)){#
+      res_int[i,2] <- state_factor_level[i]#
+  }    #
+  ##pos_state <- match(state,state_factor_level,nomatch = 0)#
+  ##if (pos_state > 0 ){#
+    if (outcome == "heart attack"){#
+      outcomeofcare_final <- outcomeofcare[complete.cases(outcomeofcare[11]),]#
+      outcomeofcare_final <- outcomeofcare_final[c(2,7,11)]#
+      heart_attack_set <- data.frame()#
+      heart_attack_set_rev <- data.frame()#
+      for (i in 1: length(state_factor_level)){#
+      outcomeofcare_final_state <- outcomeofcare_final[which(outcomeofcare_final$State == state_factor_level[i]),]#
+      names(outcomeofcare_final_state)[1] <- "Hosp"#
+      names(outcomeofcare_final_state)[3] <- "MR"#
+      y <- outcomeofcare_final_state#
+      st <- y[order(y$MR,y$Hosp),]#
+      strev <- y[order(-y$MR,y$Hosp),]#
+      ##if (num == "worst"){#
+      ##numid <- nrow(st)#
+      ##}#
+      matrow <- nrow(st)#
+      matrix_heart_attack_rank <- matrix(data=NA,nrow=matrow,ncol=1)#
+      colnames(matrix_heart_attack_rank) <- c("Rank")#
+      ##matrix_heart_attack_rank_reverse <- matrix(data=NA,nrow=numid,ncol=1)#
+      ##colnames(matrix_heart_attack_rank_reverse) <- c("Reverse Rank")#
+      for (j in 1:matrow){#
+             matrix_heart_attack_rank[j] <- j#
+      }#
+      ##for (k in numid:1){#
+      ##  matrix_heart_attack_rank_reverse[k] <- k#
+      ##}#
+      rank_df <- as.data.frame(matrix_heart_attack_rank)#
+      temp_df <- cbind(st,rank_df)#
+      temp_df_rev <- cbind(strev,rank_df)#
+      heart_attack_set <- rbind(heart_attack_set,temp_df)#
+      heart_attack_set_rev <- rbind(heart_attack_set_rev,temp_df_rev)#
+      }#
+    }#
+  if (outcome == "heart failure"){#
+    outcomeofcare_final <- outcomeofcare[complete.cases(outcomeofcare[17]),]#
+    outcomeofcare_final <- outcomeofcare_final[c(2,7,17)]#
+    heart_failure_set <- data.frame()#
+    heart_failure_set_rev <- data.frame()#
+    for (i in 1: length(state_factor_level)){#
+      outcomeofcare_final_state <- outcomeofcare_final[which(outcomeofcare_final$State == state_factor_level[i]),]#
+      names(outcomeofcare_final_state)[1] <- "Hosp"#
+      names(outcomeofcare_final_state)[3] <- "MR"#
+      y <- outcomeofcare_final_state#
+      st <- y[order(y$MR,y$Hosp),]#
+      strev <- y[order(-y$MR,y$Hosp),]#
+      ##if (num == "worst"){#
+      ##numid <- nrow(st)#
+      ##}#
+      matrow <- nrow(st)#
+      matrix_heart_failure_rank <- matrix(data=NA,nrow=matrow,ncol=1)#
+      colnames(matrix_heart_failure_rank) <- c("Rank")#
+      ##matrix_heart_attack_rank_reverse <- matrix(data=NA,nrow=numid,ncol=1)#
+      ##colnames(matrix_heart_attack_rank_reverse) <- c("Reverse Rank")#
+      for (j in 1:matrow){#
+        matrix_heart_failure_rank[j] <- j#
+      }#
+      ##for (k in numid:1){#
+      ##  matrix_heart_attack_rank_reverse[k] <- k#
+      ##}#
+      rank_df <- as.data.frame(matrix_heart_failure_rank)#
+      temp_df <- cbind(st,rank_df)#
+      temp_df_rev <- cbind(strev,rank_df)#
+      heart_failure_set <- rbind(heart_failure_set,temp_df)#
+      heart_failure_set_rev <- rbind(heart_failure_set_rev,temp_df_rev)#
+    }#
+  }#
+  if (outcome == "pneumonia"){#
+    outcomeofcare_final <- outcomeofcare[complete.cases(outcomeofcare[23]),]#
+    outcomeofcare_final <- outcomeofcare_final[c(2,7,23)]#
+    pneumonia_set <- data.frame()#
+    pneumonia_set_rev <- data.frame()#
+    for (i in 1: length(state_factor_level)){#
+      outcomeofcare_final_state <- outcomeofcare_final[which(outcomeofcare_final$State == state_factor_level[i]),]#
+      names(outcomeofcare_final_state)[1] <- "Hosp"#
+      names(outcomeofcare_final_state)[3] <- "MR"#
+      y <- outcomeofcare_final_state#
+      st <- y[order(y$MR,y$Hosp),]#
+      strev <- y[order(-y$MR,y$Hosp),]#
+      ##if (num == "worst"){#
+      ##numid <- nrow(st)#
+      ##}#
+      matrow <- nrow(st)#
+      matrix_pneumonia_rank <- matrix(data=NA,nrow=matrow,ncol=1)#
+      colnames(matrix_pneumonia_rank) <- c("Rank")#
+      ##matrix_heart_attack_rank_reverse <- matrix(data=NA,nrow=numid,ncol=1)#
+      ##colnames(matrix_heart_attack_rank_reverse) <- c("Reverse Rank")#
+      for (j in 1:matrow){#
+        matrix_pneumonia_rank[j] <- j#
+      }#
+      ##for (k in numid:1){#
+      ##  matrix_heart_attack_rank_reverse[k] <- k#
+      ##}#
+      rank_df <- as.data.frame(matrix_pneumonia_rank)#
+      temp_df <- cbind(st,rank_df)#
+      temp_df_rev <- cbind(strev,rank_df)#
+      pneumonia_set <- rbind(pneumonia_set,temp_df)#
+      pneumonia_set_rev <- rbind(pneumonia_set_rev,temp_df_rev)#
+    }#
+  }#
+  ## Prepare the data frame for the final output#
+  ## Step 1 : Assign numid based on Best , Worst or numeric value of parameter num#
+  if ( num != "worst") {#
+     if (num == "best") {#
+         numid <- 1}#
+    else { numid <- num}#
+  }#
+  else {#
+    numid <- 1}#
+  ## Step 2 : Intermediate data frame to get Hospital Name and State#
+  if (num != "worst"){#
+    intermediate_result <- data.frame()#
+    if (outcome == "heart attack"){#
+        intermediate_result <- heart_attack_set[which(heart_attack_set$Rank == numid),]#
+        ##no_of_rows <- nrow(intermediate_result)#
+        ##intermediate_result_mat <- as.matrix(intermediate )#
+        ##res_final <- matrix(data=c("NA"),nrow=no_of_rows,ncol=2)#
+        i = 0#
+        for ( i in 1:length(state_factor_level)){#
+          pos_outcome <- match(res_int[i,2],intermediate_result$State,nomatch=0)#
+          if (pos_outcome > 0){#
+          res_int[i,1] <- intermediate_result$Hosp[pos_outcome]#
+          }#
+        }#
+        res_int <- as.data.frame(res_int)#
+        colnames(res_int) <- c("Hospital","State")#
+        rownames(res_int) <- res_int$State#
+    }#
+    if (outcome == "heart failure"){#
+      intermediate_result <- heart_failure_set[which(heart_failure_set$Rank == numid),]#
+      i = 0#
+      for ( i in 1:length(state_factor_level)){#
+        pos_outcome <- match(res_int[i,2],intermediate_result$State,nomatch=0)#
+        if (pos_outcome > 0){#
+          res_int[i,1] <- intermediate_result$Hosp[pos_outcome]#
+        }#
+      }#
+      res_int <- as.data.frame(res_int)#
+      colnames(res_int) <- c("Hospital","State")#
+      rownames(res_int) <- res_int$State#
+    }#
+    if (outcome == "pneumonia"){#
+      intermediate_result <- pneumonia_set[which(pneumonia_set$Rank == numid),]#
+      i = 0#
+      for ( i in 1:length(state_factor_level)){#
+        pos_outcome <- match(res_int[i,2],intermediate_result$State,nomatch=0)#
+        if (pos_outcome > 0){#
+          res_int[i,1] <- intermediate_result$Hosp[pos_outcome]#
+        }#
+      }#
+      res_int <- as.data.frame(res_int)#
+      colnames(res_int) <- c("Hospital","State")#
+      rownames(res_int) <- res_int$State#
+    }#
+  }  #
+  else{#
+    intermediate_result <- data.frame()#
+    if (outcome == "heart attack"){#
+      intermediate_result <- heart_attack_set_rev[which(heart_attack_set_rev$Rank == numid),]#
+      i = 0#
+      for ( i in 1:length(state_factor_level)){#
+        pos_outcome <- match(res_int[i,2],intermediate_result$State,nomatch=0)#
+        if (pos_outcome > 0){#
+          res_int[i,1] <- intermediate_result$Hosp[pos_outcome]#
+        }#
+      }#
+      res_int <- as.data.frame(res_int)#
+      colnames(res_int) <- c("Hospital","State")#
+      rownames(res_int) <- res_int$State#
+    }#
+    if (outcome == "heart failure"){#
+      intermediate_result <- heart_failure_set_rev[which(heart_failure_set_rev$Rank == numid),]#
+      i = 0#
+      for ( i in 1:length(state_factor_level)){#
+        pos_outcome <- match(res_int[i,2],intermediate_result$State,nomatch=0)#
+        if (pos_outcome > 0){#
+          res_int[i,1] <- intermediate_result$Hosp[pos_outcome]#
+        }#
+      }#
+      res_int <- as.data.frame(res_int)#
+      colnames(res_int) <- c("Hospital","State")#
+      rownames(res_int) <- res_int$State#
+    }#
+    if (outcome == "pneumonia"){#
+      intermediate_result <- pneumonia_set_rev[which(pneumonia_set_rev$Rank == numid),]#
+      i = 0#
+      for ( i in 1:length(state_factor_level)){#
+        pos_outcome <- match(res_int[i,2],intermediate_result$State,nomatch=0)#
+        if (pos_outcome > 0){#
+          res_int[i,1] <- intermediate_result$Hosp[pos_outcome]#
+        }#
+      }#
+      res_int <- as.data.frame(res_int)#
+      colnames(res_int) <- c("hospital","state")#
+      rownames(res_int) <- res_int$State#
+    }#
+}#
+return(res_int)}
+rankall("heart attack",4)
+x<- 1:4
+y <- 2:3
+x+y
+class(x+y)
+x <- c(17,14,4,5,13,12,10)
+x[x>10] <-4
+x
+x <- list(2,"a","b",TRUE)
+x[[2]]
+str(x[[2]])
+x <- c(1,3,5)
+y <- c(3,2,10)
+Z <- RBIND(X,Y)
+z <- rbind(x,y)
+z
+x <- c(4,TRUE)
+class(X)
+class(x)
+x <- 4L
+class(x)
+data <- read.csv("hw1_data.csv",header=TRUE,sep=",")
+data <- read.csv("hw1_data.csv",header=TRUE,sep=",")
+data[2,]
+data[1:2,]
+nrow(data)
+data[152:153,]
+data[47,]
+data[data$Ozone=NA]
+data[data$Ozone==NA]
+data[data$Ozone== "NA"]
+data[is.na(data$Ozone),]
+nrow(data[is.na(data$Ozone),])
+mean(data$Ozone(data[!is.na(data$Ozone),])
+)
+data1 <- data[!(is.na(data$Ozone)),]
+mean(data1$Ozone)
+data2 <- data[which(data$Ozone > 31 & data$Temp > 90),]
+data2 <- data2[!(is.na(data2$Solar.R)),]
+mean(data2$Solar.R)
+data3 <- data[which(data$Month == 6),]
+data3 <- data3[!(is.na(data3$Temp)),]
+mean(data3$Temp)
+data4 <- data[which(data$Month == 5),]
+max(data4$Ozone)
+data4 <- data4[!(is.na(data4$Ozone)),]
+max(data4$Ozone)
+cube <- function(x,n){ x^3}
+cube(3)
+x <- 1:10
+if (x > 5){ x <- 0}
+f <- function(x) {
+g <- function(y) {
+y+z
+}
+z <- 4
+x + g(x)
+}
+z <- 10
+f(3)
+x < -5
+x <- 5
+y <- if (x < 3){ NA}
+else {10}
+y <- if (x < 3){ NA} else {10}
+y
+h <- function(x, y = NULL, d = 3L) {#
+        z <- cbind(x, d)#
+        if(!is.null(y))#
+                z <- z + y#
+        else#
+                z <- z + f#
+        g <- x + y / z#
+        if(d == 3L)#
+                return(g)#
+        g <- g + 10#
+        g#
+}
+h
+str(h)
+library(datasets)
+data(iris)
+?iris
+d <-iris
+str(iris)
+d_virginica <- d[which(d$Species == "Virginica"),]
+mean(d_virginica$Sepal.Length)
+d1 <- d_virginica[!(is.na(d_virginica$Sepal.Length)),]
+mean(d1$Sepal.Length)
+d1
+d_virginica
+iris$Species
+d_virginica <- d[which(d$Species == "virginica"),]
+mean(d_virginica$Sepal.Length)
+d1 <- d_virginica[!(is.na(d_virginica$Sepal.Length)),]
+mean(d1$Sepal.Length)
+rowMeans(iris[,1:4])
+apply(iris[,1:4],2,mean)
+apply(iris[,1:4],1,mean)
+data(mtcars)
+str(mtcars)
+sapply(split(mtcars$mpg,mtcars$cyl),mean)
+split(mtcars$mpg,mtcars$cyl)
+sapply(split(mtcars$hp,mtcars$cyl),mean)
+209.21429-8263636
+209.21429-82.63636
+debug(ls)
+ls()
+quit()
+x
+}
+1
+2
+quit()
+exit
+quit(save="default")
+x
